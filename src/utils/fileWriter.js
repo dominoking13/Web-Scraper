@@ -3,12 +3,20 @@ const path = require('path');
 
 async function writeToJson(data, filename) {
   const outputPath = path.join(__dirname, '../../output', filename);
+  
+  // Ensure the output folder exists
+  await fs.ensureDir(path.dirname(outputPath));
+  
   await fs.writeJson(outputPath, data, { spaces: 2 });
   console.log(`Data written to ${outputPath}`);
 }
 
 async function writeToCsv(data, filename) {
   const outputPath = path.join(__dirname, '../../output', filename);
+  
+  // Ensure the output folder exists
+  await fs.ensureDir(path.dirname(outputPath));
+  
   // Handle both array of strings (old format) and array of objects (new format)
   const csvContent = data.map(item => {
     if (typeof item === 'string') {
@@ -22,6 +30,7 @@ async function writeToCsv(data, filename) {
       return `${headline},${content},${link}`;
     }
   }).join('\n');
+  
   await fs.writeFile(outputPath, csvContent);
   console.log(`Data written to ${outputPath}`);
 }
