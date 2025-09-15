@@ -21,5 +21,7 @@ jobs:
       - uses: EndBug/add-and-commit@v9
         with:
           add: 'output'
-          message: 'Daily scrape: Update FAU news data'
+          message: 'Daily scrape: Update FAU news data - ${{ github.run_number }}'
           push: true
+          author_name: 'GitHub Actions'
+          author_email: 'action@github.com'
