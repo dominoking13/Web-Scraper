@@ -2,8 +2,9 @@ name: Daily FAU News Scrape
 
 on:
   schedule:
-    - cron: '0 9 * * *'  # Daily at 9 AM UTC
-  workflow_dispatch:     # Manual trigger
+    - cron: '0 9 * * *'      # Daily at 9 AM UTC (5 AM EDT)
+    - cron: '47 16 * * *'    # Test schedule: 11:47 AM EST (4:47 PM UTC)
+  workflow_dispatch:           # Manual trigger
 
 permissions:
   contents: write  # Allow pushing commits
