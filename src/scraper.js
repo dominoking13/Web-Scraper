@@ -1,14 +1,14 @@
 const axios = require('axios');
 
-async function fetchFauNews() {
+async function fetchNews(url) {
   try {
-    const response = await axios.get('https://www.fau.edu/newsdesk/');
-    console.log('HTML fetched successfully. Length:', response.data.length);
+    const response = await axios.get(url);
+    console.log(`Fetched ${url} successfully. Length: ${response.data.length}`);
     return response.data;
   } catch (error) {
-    console.error('Error fetching FAU news:', error);
+    console.error(`Error fetching ${url}:`, error);
     throw error;
   }
 }
 
-module.exports = fetchFauNews;
+module.exports = fetchNews;
