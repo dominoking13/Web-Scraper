@@ -42,6 +42,7 @@ Researchers and clinicians are increasingly turning to lumbar spine modeling, wh
 
 These detailed models are used to plan surgeries, evaluate spinal implants and develop personalized treatment strategies tailored to each patient’s anatomy. Despite its promise, current lumbar spine modeling is slow, manual and demands specialized expertise, limiting scalability and personalization. This hinders clinical application and results in inconsistent outcomes.
 
+<<<<<<< HEAD
 Researchers from the College of Engineering and Computer Science at Florida Atlantic University and the Marcus Neuroscience Institute at Boca Raton Regional Hospital, part of Baptist Health, have reached a major milestone in lumbar spine modeling by integrating artificial intelligence with biomechanics to transform spine diagnostics and personalized treatment planning.
 
 They are the first to create a fully automated finite element analysis pipeline specifically for lumbar spine modeling. Their breakthrough involves integrating deep learning tools like nnUNet and MONAI with biomechanical simulators such as GIBBON and FEBio.
@@ -95,6 +96,103 @@ Beyond the health care system, the societal costs of dementia are staggering. In
 
 The first and corresponding author is John Dunn, a medical student at the Schmidt College of Medicine.
 
+=======
+If you are experiencing difficulty accessing information on the Florida Atlantic University website due to a disability, visit the website accessibility page.","https://www.fau.edu/newsdesk/articles/fau-rankings-washington-monthly-2025.php"
+"Decoding a Decade of Grouper Grunts Unlocks Spawning Secrets, Shifts","A red hind grouper, which produces sounds associated with courtship, territoriality or mating.
+
+More than a decade of acoustic recordings of grouper grunts are providing new insight into how sound can be used to monitor and manage vulnerable fish populations. The research by Florida Atlantic University’s Harbor Branch Oceanographic Institute focused on the red hind (Epinephelus guttatus), a commercially important Caribbean grouper species.
+
+Red hind are protogynous hermaphrodites, starting life as females and later becoming males. Each winter, they travel more than 30 kilometers to offshore sites to spawn under the full moon in large gatherings. Males use rhythmic, low-frequency sounds to attract mates and to defend territory. This predictable behavior makes them especially vulnerable to overfishing during spawning season.
+
+Rather than traditional survey methods, FAU Harbor Branch and FAU College of Engineering and Computer Science researchers, in collaboration with HJR Reefscaping, the University of the Virgin Islands, and the University of Puerto Rico, turned to passive acoustic monitoring. This technique enables continuous, long-term monitoring of reproductive behavior, even in remote or hard-to-access areas, without disrupting the animals or their habitat.
+
+To examine how red hind reproductive behavior has changed over time, researchers analyzed more than 2,000 hours of underwater recordings from a single spawning site off Puerto Rico’s west coast, continuously monitored since 2007.
+
+Unlike most acoustic studies that track general sound levels, this research focused on specific mating calls tied to distinct behaviors. Red hind produce two primary sound types – one for courtship and another for territorial defense. Tracking these sounds over time allowed researchers to detect subtle shifts in spawning behavior and population dynamics.
+
+The result, published in the ICES Journal of Marine Science, is one of the most extensive and uninterrupted acoustic datasets ever assembled for a reef fish species.
+
+The analysis confirmed a consistent seasonal pattern in red hind spawning activity, closely aligned with lunar cycles. However, one of the most striking findings was a notable shift in the balance of call types over the 12-year period. Between 2011 and 2017, calls linked to courtship were more common. But starting in 2018, calls linked to competition and territorial behavior became dominant – nearly tripling over the study period.
+
+“This shift could indicate changes in the population, such as an increase in the number of older or more dominant males, changes in sex ratios, or even a shift in the core spawning area,” said Laurent Chérubin, Ph.D., lead author and a research professor at FAU Harbor Branch.
+
+Researchers also observed more frequent and multiple peaks in sound production in recent years, suggesting that spawning may now be spread over more days in each lunar cycle than in the past. These changes could be responses to environmental or population shifts.
+
+Importantly, the study shows that passive acoustic monitoring can be a powerful tool for tracking reproductive behavior over time and detecting early signs of population or behavioral change – information that is critical for managing and conserving red hind and similar reef fish species.
+
+“What’s remarkable is that even a single underwater microphone can reveal so much about fish populations,” said Chérubin. “With consistent long-term monitoring, we can pick up early warning signs – like shifts in spawning behavior or population stress – and give resource managers the information they need to adapt conservation strategies before it’s too late.”
+
+At the center of the analysis was an advanced machine-learning tool called FADAR (fish acoustic detection algorithm research). This custom-built acoustic classifier allowed the team to detect and distinguish between different types of mating calls with extraordinary speed and accuracy.
+
+“This study shows how much we can learn simply by listening,” said Chérubin. “Thanks to FADAR, we processed 12 years of acoustic data in weeks – uncovering patterns that would have taken years to find. It’s a game changer for monitoring and managing reef fish like red hind.”
+
+“As passive acoustics advances, it’s transforming our understanding of the ocean,” said Chérubin. “By tuning in to underwater soundscapes, we’re discovering not just when and where fish spawn, but how those patterns change over time – offering vital insights into the health of marine ecosystems.”
+
+Study co-authors are Caroline Woodward, United States Geological Survey; Michelle Schärer-Umpierre, Ph.D., associate researcher, HJR Reefscaping and the University of Puerto Rico-Mayaguez; Richard S. Nemeth, Ph.D., research professor, Center for Marine and Environmental Studies, University of the Virgin Islands; Richard Appeldoorn, Ph.D., a faculty member; and Evan Tuhoy, a Ph.D. candidate, both within the Department of Marine Sciences, University of Puerto Rico; and Ali K. Ibrahim, Ph.D., a research engineer in FAU’s Department of Electrical Engineering and Computer Science.
+
+If you are experiencing difficulty accessing information on the Florida Atlantic University website due to a disability, visit the website accessibility page.","https://www.fau.edu/newsdesk/articles/grouper-grunts-spawning-secrets.php"
+"FAU/Baptist Health AI Spine Model Could Transform Back Pain Treatment","Nearly 3 in 10 adults in the U.S. have experienced lower back pain in any three-month period, making it the most common musculoskeletal pain.
+
+Nearly 3 in 10 adults in the United States have experienced lower back pain in any three-month period, making it the most common musculoskeletal pain. Back pain remains one of the leading causes of disability worldwide, affecting millions and often leading to chronic discomfort, missed work and invasive procedures.
+
+Researchers and clinicians are increasingly turning to lumbar spine modeling, which bridges engineering and medicine, creating a virtual, patient-specific model of the lower back. This technology simulates how the spine moves, where mechanical stress builds up, and what might be causing pain or dysfunction.
+
+These detailed models are used to plan surgeries, evaluate spinal implants and develop personalized treatment strategies tailored to each patient’s anatomy. Despite its promise, current lumbar spine modeling is slow, manual and demands specialized expertise, limiting scalability and personalization. This hinders clinical application and results in inconsistent outcomes.
+
+Researchers from the College of Engineering and Computer Science at Florida Atlantic University and the Marcus Neuroscience Institute at Boca Raton Regional Hospital, part of Baptist Health, have reached a major milestone in lumbar spine modeling by integrating artificial intelligence with biomechanics to transform spine diagnostics and personalized treatment planning.
+
+They are the first to create a fully automated finite element analysis pipeline specifically for lumbar spine modeling. Their breakthrough involves integrating deep learning tools like nnUNet and MONAI with biomechanical simulators such as GIBBON and FEBio.
+
+Results of the study, published in the journal World Neurosurgery, show that this new approach reduced lumbar spine model preparation time by 97.9% – from more than 24 hours to just 30 minutes and 49 seconds – without compromising biomechanical accuracy. The fully automated pipeline enables rapid, patient-specific simulations that support preoperative planning, spinal implant optimization and early detection of degenerative spine conditions.
+
+Tests showed that the virtual spine reacted just like a real one, with realistic disc movement, ligament tension and pressure in the back of the spine during bending and stretching. Because the system runs with very little manual work, it’s much faster and more consistent than traditional methods, making it a valuable tool for doctors and researchers alike.
+
+“What sets our approach apart is its ability to automatically convert standard medical images like CT or MRI scans into highly accurate, patient-specific spine models,” said Maohua Lin, Ph.D., corresponding author and a research assistant professor, FAU Department of Biomedical Engineering. “Traditional manual methods require complex geometry processing, meshing and finite element simulation setup, making them not only time-intensive but also highly dependent on the operator’s expertise. Our automated pipeline significantly reduces the time required, cutting what once took several hours or even days down to just minutes.”
+
+For the study, researchers used advanced AI to automatically identify important parts of the spine – like bones and discs – from medical scans. These were then turned into smooth 3D models that included bones, cartilage and ligaments. They mapped where the ligaments attach and shaped the cartilage based on common patterns. Lastly, researchers ran computer simulations to see how the spine responds to movements like bending and twisting, helping them understand where stress builds up and how the spine moves in real life.
+
+“Beyond advancing research, automated lumbar spine modeling plays a critical role in preoperative planning,” said Frank D. Vrionis, M.D., corresponding author and chief of neurosurgery at Marcus Neuroscience Institute. “This technology quickly generates patient-specific models to predict mechanical complications, optimize implant design and reduce surgical risks. By removing manual steps, it also improves speed and consistency, helping clinicians make more informed decisions.”
+
+This research builds upon previous work by the research team published in leading journals including Artificial Intelligence Review and the North American Spine Society Journal, investigating related AI-driven biomechanical modeling techniques.
+
+“This groundbreaking work exemplifies the game-changing power of uniting engineering and medicine to address complex health care challenges,” said Stella Batalama, Ph.D., dean of the FAU College of Engineering and Computer Science. “FAU and Baptist Health researchers are not only pushing the boundaries of innovation, they are also delivering real-world solutions that can improve patient outcomes and redefine spine care.”
+
+Study co-authors are Mohsen Ahmadi, a Ph.D. student in the FAU Department of Electrical Engineering and Computer Science; Xuanzong Zhang, an American Heritage High School student; Yufei Tang, Ph.D., an associate professor, FAU Department of Electrical Engineering and Computer Science and FAU Sensing Institute fellow; Erik Engeberg, Ph.D., a professor, FAU Department of Biomedical Engineering and Department of Ocean and Mechanical Engineering, a member of the FAU Center for Complex Systems and Brain Sciences within the Charles E. Schmidt College of Science, and a member of the FAU Stiles-Nicholson Brain Institute; and Javad Hashemi, Ph.D., inaugural chair and professor of the Department of Biomedical Engineering and associate dean for research, FAU College of Engineering and Computer Science.
+
+This research was supported by Boca Raton Regional Hospital, part of Baptist Health, the Helene and Stephen Weicholz Foundation, the National Science Foundation, pilot grants from the FAU College of Engineering and Computer Science, the FAU Stiles-Nicholson Brain Institute, the FAU Center for Smart Health, and the FAU Sensing Institute.
+
+If you are experiencing difficulty accessing information on the Florida Atlantic University website due to a disability, visit the website accessibility page.","https://www.fau.edu/newsdesk/articles/ai-spine-modeling-back-pain.php"
+"Researchers Show How Healthy Habits Can Improve Cognitive Decline","Up to 45% of dementia risk is linked to modifiable factors like poor diet, inactivity and isolation.
+
+An estimated 7.2 million Americans over age 65 currently live with Alzheimer’s disease (AD). That number is expected to nearly double to 13.8 million by 2060. These increases reflect more than demographic shifts; they point to a growing public health crisis that requires a new, proactive approach. While chronological age is the strongest known risk factor for cognitive decline, losing cognitive function is not an inevitable part of aging.
+
+As AD and other forms of cognitive decline continue to rise at an alarming rate, researchers from Florida Atlantic University’s Charles E. Schmidt College of Medicine, highlight a powerful and untapped path to prevention.
+
+In a commentary published in The American Journal of Medicine, the researchers urge clinicians, public health professionals and policymakers to implement coordinated efforts to support lifestyle-based interventions that can help reduce the growing burden of cognitive decline in the United States and worldwide.
+
+“While deaths from cardiovascular disease have declined since 2000, deaths from Alzheimer’s disease have surged by more than 140%,” said Charles H. Hennekens, M.D., FACPM, FACC, co-author, the First Sir Richard Doll Professor of Medicine and Preventive Medicine, and senior academic advisor, Schmidt College of Medicine. “At the same time, it is estimated that up to 45% of dementia risk could be attributed to modifiable lifestyle and environmental factors.”
+
+Lifestyle risk factors like physical inactivity, poor diet, obesity, alcohol use, and conditions such as hypertension, diabetes, depression, and social or intellectual isolation are believed to contribute to cognitive decline. The authors point out that the same therapeutic lifestyle changes proven effective for reducing risks of cardiovascular and other major diseases may also help reduce cognitive decline – potentially with additive effects when multiple risk factors are present.
+
+The commentary highlights the recently published results from POINTER, the first large-scale U.S-based randomized trial to test whether intensive lifestyle changes can improve cognitive outcomes in older adults at high risk of decline. In this trial, participants who were assigned at random to a structured, team-based lifestyle intervention showed statistically significant and clinically meaningful improvements in global cognition over two years. These gains were especially notable in executive functions such as memory, attention, planning and decision-making. The intervention emphasized regular physical activity, a combination of Mediterranean and DASH-style diets, cognitive stimulation and social engagement – reinforced through ongoing professional guidance and group support.
+
+These findings are similar to an earlier Finnish trial, the FINGER trial, in which participants with elevated cardiovascular risk scores assigned at random to a multidomain lifestyle approach experienced cognitive benefits.
+
+“The data from both these landmark, large scale randomized trials demonstrate that lifestyle changes – previously shown to reduce heart disease and cancer – also hold transformative potential for brain health,” Hennekens said.
+
+The researchers also speculated about biological mechanisms that may underlie these benefits. Physical activity, for example, increases brain-derived neurotrophic factor, which supports hippocampal growth, while also improving blood flow and reducing inflammation. Healthy dietary patterns like the Mediterranean and DASH diets can lower oxidative stress and improve insulin sensitivity as well as risks of cardiovascular disease. Quitting smoking may help preserve brain structure and white matter integrity, and regular social and cognitive engagement promotes neuroplasticity and mental resilience.
+
+“The implications for clinical practice, public health and government policy are potentially enormous,” said Parvathi Perumareddi, D.O., co-author and an associate professor of family medicine in the Schmidt College of Medicine. “Clinicians now have powerful, evidence-based tools to help their patients prevent or slow cognitive decline – tools that go beyond medications, are generally low-risk, and are cost-effective. Public health agencies could adopt the framework of trials like POINTER and FINGER to develop brain health programs.”
+
+On the policy front, the researchers note that potential cost savings are large, particularly when considering the high price and limited effectiveness of many new pharmacologic agents, which may cause common and less serious side effects like nausea, headache and fatigue, as well as more rare but more serious risks like confusion or gastrointestinal bleeding. Modeling studies suggest that reducing key risk factors by even 10% to 20% each decade could lower the burden of cognitive decline by up to 15%.
+
+Beyond the health care system, the societal costs of dementia are staggering. In 2024, nearly 12 million family members and unpaid caregivers provided an estimated 19.2 billion hours of care to individuals living with dementia – amounting to a societal cost of more than $413 billion. Caregiving also takes an emotional toll, often resulting in mental health challenges and caregiver burnout. The researchers emphasize that these realities underscore the need for practical, community-based solutions that support both patients and caregivers and reduce the long-term burden on families and the economy.
+
+“While more research is needed, the current totality of evidence supports a clear path forward: invest in lifestyle-based strategies to protect brain health,” said Hennekens. “Doing so will not only benefit individuals at risk but also serve as a powerful tool for reducing national and global health care burdens related to cognitive decline.”
+
+The first and corresponding author is John Dunn, a medical student at the Schmidt College of Medicine.
+
+>>>>>>> 7297e963de877aec3cfd30c4ac4da5137c3e6ff2
 If you are experiencing difficulty accessing information on the Florida Atlantic University website due to a disability, visit the website accessibility page.","https://www.fau.edu/newsdesk/articles/healthy-habits-cognitive-decline.php"
 "FAU High School Merit Scholars on the Rise","The class of 2026 at Florida Atlantic University High School continues to exemplify outstanding academic achievements, with 23 seniors named as National Merit Scholar semifinalists, and 43 designated as “commended students.”
 
