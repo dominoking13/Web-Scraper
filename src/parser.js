@@ -1,6 +1,69 @@
 const cheerio = require('cheerio');
 const axios = require('axios');
 
+// Function to clean HTML content and remove unwanted elements
+function cleanContent(text) {
+    if (!text) return '';
+
+    // Remove HTML tags
+    let cleaned = text.replace(/<[^>]*>/g, '');
+
+    // Remove extra whitespace and newlines
+    cleaned = cleaned.replace(/\s+/g, ' ').trim();
+
+    // Remove common unwanted patterns
+    cleaned = cleaned.replace(/\n+/g, ' ');
+    cleaned = cleaned.replace(/\t+/g, ' ');
+    cleaned = cleaned.replace(/\r+/g, ' ');
+
+    // Remove image alt text patterns
+    cleaned = cleaned.replace(/img alt[^"]*"[^"]*"/gi, '');
+    cleaned = cleaned.replace(/alt="[^"]*"/gi, '');
+
+    // Remove script content and JavaScript
+    cleaned = cleaned.replace(/document\.getElementById\([^)]+\)\.addEventListener\([^)]+\)/g, '');
+    cleaned = cleaned.replace(/fetch\([^)]+\)/g, '');
+    cleaned = cleaned.replace(/let [^=]+=\{[^}]+\};/g, '');
+    cleaned = cleaned.replace(/ns\.classList\.toggle\([^)]+\)/g, '');
+    cleaned = cleaned.replace(/nsu\.classList\.toggle\([^)]+\)/g, '');
+    cleaned = cleaned.replace(/document\.getElementById\([^)]+\)\.innerHTML[^;]+;/g, '');
+    cleaned = cleaned.replace(/event\.preventDefault\(\);/g, '');
+    cleaned = cleaned.replace(/let [^=]+=\s*document\.getElementById\([^)]+\)\.value;/g, '');
+    cleaned = cleaned.replace(/let [^=]+=\s*document\.getElementById\([^)]+\);/g, '');
+    cleaned = cleaned.replace(/Authorization:\s*'[^']*'/g, '');
+    cleaned = cleaned.replace(/Content-Type:\s*'[^']*'/g, '');
+    cleaned = cleaned.replace(/method:\s*'[^']*'/g, '');
+    cleaned = cleaned.replace(/console\.log\([^)]+\)/g, '');
+    cleaned = cleaned.replace(/;\s*\}\)\.then\(function\([^}]+\}\);/g, '');
+    cleaned = cleaned.replace(/function\([^)]+\)\s*\{[^}]*\}/g, '');
+    cleaned = cleaned.replace(/JSON\.stringify\([^)]+\)/g, '');
+
+    // Remove newsletter signup text
+    cleaned = cleaned.replace(/Sign up for the[^}]*}/gi, '');
+    cleaned = cleaned.replace(/now signed up to receive[^}]*}/gi, '');
+    cleaned = cleaned.replace(/Click here to manage all Newsletters/gi, '');
+
+    // Remove copyright notices and boilerplate
+    cleaned = cleaned.replace(/Copyright \d{4} [^.]*\./gi, '');
+    cleaned = cleaned.replace(/All rights reserved\./gi, '');
+    cleaned = cleaned.replace(/This material may not be published[^.]*\./gi, '');
+
+    // Remove common website footer text
+    cleaned = cleaned.replace(/At WPTV, It Starts with Listening/gi, '');
+    cleaned = cleaned.replace(/Protecting Paradise/gi, '');
+
+    // Remove action buttons text
+    cleaned = cleaned.replace(/Actions Facebook Tweet Email/gi, '');
+
+    // Remove navigation text
+    cleaned = cleaned.replace(/Prev Next/gi, '');
+
+    // Clean up multiple spaces again
+    cleaned = cleaned.replace(/\s+/g, ' ').trim();
+
+    return cleaned;
+}
+
 async function parseHeadlines(html, siteConfig) {
     const $ = cheerio.load(html);
     const headlines = [];
@@ -17,7 +80,7 @@ async function parseHeadlines(html, siteConfig) {
 
         // Get content using site-specific selector
         const $content = $headline.next(siteConfig.selectors.content);
-        const teaserContent = $content.length > 0 ? $content.text().trim() : '';
+        const teaserContent = $content.length > 0 ? cleanContent($content.text().trim()) : '';
 
         // Get link using site-specific selector
         const $link = $headline.closest('a').length > 0 ? $headline.closest('a') :
@@ -50,7 +113,7 @@ async function parseHeadlines(html, siteConfig) {
                     for (const selector of articleSelectors) {
                         const contentElement = $article(selector);
                         if (contentElement.length > 0) {
-                            const rawText = contentElement.text().trim();
+                            const rawText = cleanContent(contentElement.text().trim());
 
                             // Filter out navigation and header text
                             if (!rawText.includes('HOME') && !rawText.includes('NEWS DESK') &&
@@ -79,15 +142,15 @@ async function parseHeadlines(html, siteConfig) {
                         });
 
                         if (articleParagraphs.length > 0) {
-                            let cleanContent = '';
+                            let articleText = '';
                             articleParagraphs.each((i, el) => {
-                                const text = $article(el).text().trim();
+                                const text = cleanContent($article(el).text().trim());
                                 if (text) {
-                                    cleanContent += text + '\n\n';
+                                    articleText += text + '\n\n';
                                 }
                             });
-                            if (cleanContent.length > teaserContent.length) {
-                                fullContent = cleanContent.trim();
+                            if (articleText.length > teaserContent.length) {
+                                fullContent = articleText.trim();
                             }
                         }
                     }
@@ -102,7 +165,7 @@ async function parseHeadlines(html, siteConfig) {
 
             headlines.push({
                 headline: headline,
-                content: fullContent,
+                content: cleanContent(fullContent),
                 link: link.startsWith('http') ? link : siteConfig.url + link
             });
         }
