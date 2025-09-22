@@ -18,10 +18,40 @@ jobs:
           node-version: '20'
       - run: npm install
       - run: npm start
-      - uses: EndBug/add-and-commit@v9
+
+      # Check if there are changes in output directory
+      - name: Check for changes
+        id: check_changes
+        run: |
+          if git diff --quiet output/; then
+            echo "No changes detected in output files"
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "Changes detected in output files"
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          fi
+
+      # Commit and push changes if any exist
+      - name: Commit and push changes
+        if: steps.check_changes.outputs.has_changes == 'true'
+        uses: EndBug/add-and-commit@v9
         with:
           add: 'output'
-          message: 'Daily scrape: Update FAU news data - ${{ github.run_number }}'
+          message: 'Daily scrape: Update news data - ${{ github.run_number }}'
           push: true
           author_name: 'GitHub Actions'
           author_email: 'action@github.com'
+
+      # Message when no changes detected
+      - name: No changes message
+        if: steps.check_changes.outputs.has_changes == 'false'
+        run: |
+          echo "🤖 **No News Updates Today** 🤖"
+          echo ""
+          echo "The daily news scraper ran successfully, but no new headlines were found."
+          echo "All news sources (FAU, FAU Research, WPTV Local) have the same content as yesterday."
+          echo ""
+          echo "This is normal - news doesn't change every day!"
+          echo "The scraper will check again tomorrow at 5:00 AM EST."
+          echo ""
+          echo "Run: ${{ github.run_number }} | Date: $(date -u +'%Y-%m-%d %H:%M UTC')"
