@@ -1,11 +1,19 @@
 const fetchNews = require('./scraper');
 const parseHeadlines = require('./parser');
 const { writeToJson, writeToCsv } = require('./utils/fileWriter');
+const ContentCache = require('./utils/contentCache');
 const sites = require('./config/sites');
 
 async function main() {
   try {
-    console.log('Starting multi-site news scraping...');
+    console.log('🚀 Starting multi-site news scraping with caching...');
+
+    // Initialize content cache
+    const cache = new ContentCache();
+    await cache.init();
+
+    let sitesProcessed = 0;
+    let sitesSkipped = 0;
 
     // Process each site sequentially
     for (const site of sites) {
@@ -15,32 +23,46 @@ async function main() {
 
         const html = await fetchNews(site.url);
 
-        console.log('Parsing headlines...');
-        const headlines = await parseHeadlines(html, site);
+        // Check if content has changed using cache
+        const contentChanged = await cache.hasContentChanged(site.name, html);
 
-        console.log(`Found ${headlines.length} headlines`);
-
-        if (headlines.length > 0) {
-          // Create an array of objects for JSON output
-          const headlinesObj = headlines.map((item, index) => ({
-            id: index + 1,
-            headline: item.headline,
-            content: item.content,
-            link: item.link
-          }));
-
-          // Generate site-specific filenames
-          const baseName = site.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
-          const jsonFile = `${baseName}-headlines.json`;
-          const csvFile = `${baseName}-headlines.csv`;
-
-          // Write to files
-          await writeToJson(headlinesObj, jsonFile);
-          await writeToCsv(headlines, csvFile);
-
-          console.log(`✅ ${site.name} scraping completed!`);
+        if (!contentChanged) {
+          console.log(`⏭️  ${site.name} content unchanged - skipping scrape`);
+          sitesSkipped++;
         } else {
-          console.log(`⚠️ No headlines found for ${site.name}`);
+          console.log(`📝 ${site.name} content changed - processing...`);
+
+          console.log('Parsing headlines...');
+          const headlines = await parseHeadlines(html, site);
+
+          console.log(`Found ${headlines.length} headlines`);
+
+          if (headlines.length > 0) {
+            // Create an array of objects for JSON output
+            const headlinesObj = headlines.map((item, index) => ({
+              id: index + 1,
+              headline: item.headline,
+              content: item.content,
+              link: item.link
+            }));
+
+            // Generate site-specific filenames
+            const baseName = site.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+            const jsonFile = `${baseName}-headlines.json`;
+            const csvFile = `${baseName}-headlines.csv`;
+
+            // Write to files
+            await writeToJson(headlinesObj, jsonFile);
+            await writeToCsv(headlines, csvFile);
+
+            // Update cache with new content
+            await cache.updateCache(site.name, html);
+
+            console.log(`✅ ${site.name} scraping completed!`);
+            sitesProcessed++;
+          } else {
+            console.log(`⚠️ No headlines found for ${site.name}`);
+          }
         }
 
         // Add delay between sites to be respectful
@@ -55,7 +77,18 @@ async function main() {
       }
     }
 
-    console.log('\n🎉 All sites processed successfully!');
+    // Summary
+    console.log('\n📊 Scraping Summary:');
+    console.log(`   Sites processed: ${sitesProcessed}`);
+    console.log(`   Sites skipped (cached): ${sitesSkipped}`);
+    console.log(`   Total sites: ${sites.length}`);
+
+    if (sitesProcessed > 0) {
+      console.log('\n🎉 Scraping completed with updates!');
+    } else {
+      console.log('\n🤖 All sites had unchanged content - no updates needed');
+    }
+
   } catch (error) {
     console.error('❌ Critical error:', error);
   }

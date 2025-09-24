@@ -10,6 +10,7 @@ A comprehensive web scraper that fetches news headlines from multiple sources in
 - ⚡ **Configurable limits**: Set custom headline limits per news source
 - 🔄 **Automated scheduling**: GitHub Actions workflow for daily automated scraping
 - 📁 **Organized output**: Separate files for each news source in dedicated output directory
+- 🚀 **Smart caching**: Avoids re-scraping unchanged content using SHA-256 hashing
 
 ## Project Structure
 
@@ -23,7 +24,10 @@ fau-news-scraper/
 │   │   └── sites.js          # Configuration file defining news sources, selectors, and limits
 │   └── utils/
 │       ├── fileWriter.js     # Utility functions for writing JSON/CSV output files
-│       └── logger.js         # Logging utilities for debugging and monitoring
+│       ├── logger.js         # Logging utilities for debugging and monitoring
+│       └── contentCache.js   # Content caching utility to avoid re-scraping unchanged pages
+├── .cache/                   # Cache directory for storing content hashes (ignored by Git)
+│   └── content-hashes.json   # SHA-256 hashes of previously scraped content
 ├── output/                   # Generated output files directory
 │   ├── fau-headlines.json    # FAU main news headlines (JSON format)
 │   ├── fau-headlines.csv     # FAU main news headlines (CSV format)
@@ -65,9 +69,11 @@ node src/index.js
 ```
 
 This will:
-- Scrape all configured news sources
+- Check cached content hashes to avoid re-scraping unchanged pages
+- Scrape only sites with new or updated content
 - Generate clean output files in the `output/` directory
-- Display progress and results in the console
+- Update content hashes for future runs
+- Display progress and results in the console (including cache hits/skips)
 
 ### Automated Execution
 
@@ -104,6 +110,27 @@ Modify the `limit` property in `src/config/sites.js`:
 - Remove the `limit` property to scrape all available headlines
 - Set `limit: N` to scrape only the first N headlines
 
+## Caching System
+
+The scraper uses intelligent caching to avoid unnecessary HTTP requests and processing:
+
+### How It Works
+- **SHA-256 Hashing**: Generates content hashes for each webpage
+- **Change Detection**: Compares current content hash with cached hash
+- **Smart Skipping**: Skips scraping when content hasn't changed
+- **Automatic Updates**: Updates cache after successful scraping
+
+### Cache Location
+- Cache files are stored in `.cache/content-hashes.json`
+- Cache directory is excluded from Git (added to `.gitignore`)
+- Cache persists between runs for optimal performance
+
+### Cache Benefits
+- ⚡ **Faster execution**: Skip unchanged sites in seconds
+- 📉 **Reduced bandwidth**: Avoid unnecessary HTTP requests
+- 🔄 **Efficient automation**: Daily runs only process changes
+- 📊 **Detailed reporting**: Console shows processed vs skipped sites
+
 ## Output Files
 
 Each news source generates two output files:
@@ -130,6 +157,7 @@ Each news source generates two output files:
 - **axios**: HTTP client for fetching web content
 - **cheerio**: jQuery-like library for HTML parsing
 - **fs-extra**: Enhanced file system operations
+- **crypto**: Built-in Node.js module for SHA-256 content hashing
 
 ## Development
 
@@ -177,7 +205,7 @@ console.log('Scraping progress...');
 ## Future Enhancements
 
 - [ ] Add more news sources
-- [ ] Implement caching to avoid re-scraping unchanged content
+- [x] Implement caching to avoid re-scraping unchanged content
 - [ ] Add web interface for configuration
 - [ ] Support for additional output formats (XML, RSS)
 - [ ] Email notifications for new headlines
