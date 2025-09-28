@@ -36,6 +36,16 @@ const sites = [
       link: 'h3 a'
     },
     limit: 10
+  },
+  {
+    name: 'accuweather-boca-raton',
+    url: 'https://www.accuweather.com/en/us/boca-raton/33432/weather-forecast/332347',
+    type: 'weather',
+    selectors: {
+      currentWeather: '[data-qa="current-weather"]',
+      todayWeather: '[data-qa="today-weather"]',
+      forecast10Day: '[data-qa="10day"] .daily-list-item'
+    }
   }
 ];
 

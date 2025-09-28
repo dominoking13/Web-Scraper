@@ -68,6 +68,11 @@ async function parseHeadlines(html, siteConfig) {
     const $ = cheerio.load(html);
     const headlines = [];
 
+    // Handle weather sites differently
+    if (siteConfig.type === 'weather') {
+        return parseWeatherData($, siteConfig);
+    }
+
     // Get all headline elements based on site configuration
     const headlineElements = $(siteConfig.selectors.headline);
 
@@ -173,6 +178,145 @@ async function parseHeadlines(html, siteConfig) {
 
     console.log(`Parsed ${headlines.length} headlines for ${siteConfig.name}`);
     return headlines;
+}
+
+function parseWeatherData($, siteConfig) {
+    const weatherData = [];
+
+    try {
+        // First, try to find weather data in script tags (JSON data)
+        const scripts = $('script');
+        let weatherJsonData = null;
+
+        scripts.each((i, script) => {
+            const scriptContent = $(script).html();
+            if (scriptContent && scriptContent.includes('current')) {
+                // Look for JSON data containing weather information
+                const jsonMatch = scriptContent.match(/({.*current.*})/s);
+                if (jsonMatch) {
+                    try {
+                        weatherJsonData = JSON.parse(jsonMatch[1]);
+                    } catch (e) {
+                        // Try to find other patterns
+                    }
+                }
+            }
+        });
+
+        // If we found JSON data, use it
+        if (weatherJsonData) {
+            // Parse JSON data here if needed
+        }
+
+        // Fallback: Try to find weather data in data attributes
+        const weatherElements = $('[data-qa*="weather"], [class*="weather"], [class*="temp"], [class*="forecast"]');
+
+        // Look for current weather
+        const currentTemp = $('[data-temp], .temp, .current-temp').first().text().trim() ||
+                           $('body').text().match(/(\d+)°F/)?.[1];
+        const currentCondition = $('.condition, .phrase, .weather-phrase').first().text().trim();
+
+        if (currentTemp) {
+            // Clean up temperature (remove duplicate °F)
+            const cleanTemp = currentTemp.replace('°F°F', '°F').replace('°°', '°');
+            weatherData.push({
+                type: 'current',
+                temperature: cleanTemp.includes('°') ? cleanTemp : cleanTemp + '°F',
+                condition: currentCondition || 'Unknown',
+                timestamp: new Date().toISOString()
+            });
+        }
+
+        // Look for today's forecast
+        const todayHigh = $('body').text().match(/Hi:\s*(\d+)°/)?.[1];
+        const todayLow = $('body').text().match(/Lo:\s*(\d+)°/)?.[1];
+
+        if (todayHigh && todayLow) {
+            weatherData.push({
+                type: 'today',
+                high: todayHigh + '°',
+                low: todayLow + '°',
+                date: new Date().toISOString().split('T')[0]
+            });
+        }
+
+        // Look for 10-day forecast in any format - try multiple patterns
+        const forecastText = $('body').text();
+
+        // Pattern 1: "DAY DATE HIGH° LOW°" format
+        const forecastMatches1 = forecastText.match(/([A-Z]{3,})\s+(\d+\/\d+)\s+(\d+)°\s+(\d+)°/g);
+
+        // Pattern 2: "TONIGHT/SUN/MON etc. DATE HIGH° Lo LOW°" format
+        const forecastMatches2 = forecastText.match(/(TONIGHT|MON|TUE|WED|THU|FRI|SAT|SUN)\s+(\d+\/\d+)\s+(\d+)°\s+(?:Lo\s+)?(\d+)°/g);
+
+        // Pattern 3: Look for any temperature patterns in forecast sections
+        const forecastSection = forecastText.match(/10-DAY WEATHER FORECAST[\s\S]*?(?=SUN & MOON|$)/);
+        let forecastMatches3 = [];
+        if (forecastSection) {
+            forecastMatches3 = forecastSection[1].match(/(\d+)°/g) || [];
+        }
+
+        const allForecastMatches = forecastMatches1 || forecastMatches2 || [];
+        console.log('Forecast matches pattern 1:', forecastMatches1?.length || 0);
+        console.log('Forecast matches pattern 2:', forecastMatches2?.length || 0);
+        console.log('Forecast matches pattern 3:', forecastMatches3?.length || 0);
+
+        if (allForecastMatches.length > 0) {
+            allForecastMatches.slice(0, 10).forEach((match, index) => {
+                const parts = match.trim().split(/\s+/);
+                if (parts.length >= 4) {
+                    const forecastDate = new Date();
+                    forecastDate.setDate(forecastDate.getDate() + index + 1);
+
+                    weatherData.push({
+                        type: 'forecast',
+                        day: parts[0],
+                        date: parts[1],
+                        high: parts[2],
+                        low: parts[3],
+                        forecastDate: forecastDate.toISOString().split('T')[0]
+                    });
+                }
+            });
+        }
+
+        // Try alternative forecast extraction from structured data
+        const forecastElements = $('[data-qa*="forecast"], .forecast-card, .daily-forecast');
+        forecastElements.slice(0, 10).each((index, element) => {
+            const $el = $(element);
+            const day = $el.find('.day, .date').text().trim();
+            const high = $el.find('.high, .temp-h').text().trim();
+            const low = $el.find('.low, .temp-l').text().trim();
+            const condition = $el.find('.condition, .phrase').text().trim();
+
+            if (day && (high || low)) {
+                const forecastDate = new Date();
+                forecastDate.setDate(forecastDate.getDate() + index + 1);
+
+                weatherData.push({
+                    type: 'forecast',
+                    day: day,
+                    high: high,
+                    low: low,
+                    condition: condition,
+                    forecastDate: forecastDate.toISOString().split('T')[0]
+                });
+            }
+        });
+
+        console.log('Weather elements found:', weatherElements.length);
+        console.log('Current temp found:', !!currentTemp);
+        console.log('Today forecast found:', !!(todayHigh && todayLow));
+        console.log('Forecast matches pattern 1:', forecastMatches1?.length || 0);
+        console.log('Forecast matches pattern 2:', forecastMatches2?.length || 0);
+        console.log('Forecast matches pattern 3:', forecastMatches3?.length || 0);
+
+    } catch (error) {
+        console.error(`Error parsing weather data for ${siteConfig.name}:`, error.message);
+    }
+
+    console.log(`Parsed ${weatherData.length} weather data items for ${siteConfig.name}`);
+    return weatherData;
 }
 
 module.exports = parseHeadlines;

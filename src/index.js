@@ -32,28 +32,62 @@ async function main() {
         } else {
           console.log(`📝 ${site.name} content changed - processing...`);
 
-          console.log('Parsing headlines...');
-          const headlines = await parseHeadlines(html, site);
+          console.log('Parsing content...');
+          const content = await parseHeadlines(html, site);
 
-          console.log(`Found ${headlines.length} headlines`);
+          console.log(`Found ${content.length} items`);
 
-          if (headlines.length > 0) {
-            // Create an array of objects for JSON output
-            const headlinesObj = headlines.map((item, index) => ({
-              id: index + 1,
-              headline: item.headline,
-              content: item.content,
-              link: item.link
-            }));
+          if (content.length > 0) {
+            let outputData;
+            let jsonFile, csvFile;
 
-            // Generate site-specific filenames
-            const baseName = site.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
-            const jsonFile = `${baseName}-headlines.json`;
-            const csvFile = `${baseName}-headlines.csv`;
+            if (site.type === 'weather') {
+              // Handle weather data
+              outputData = content.map((item, index) => ({
+                id: index + 1,
+                ...item
+              }));
 
-            // Write to files
-            await writeToJson(headlinesObj, jsonFile);
-            await writeToCsv(headlines, csvFile);
+              // Generate weather-specific filenames
+              const baseName = site.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+              jsonFile = `${baseName}-weather.json`;
+              csvFile = `${baseName}-weather.csv`;
+
+              // For CSV, flatten weather data
+              const csvData = content.map(item => ({
+                type: item.type,
+                temperature: item.temperature || '',
+                condition: item.condition || '',
+                high: item.high || '',
+                low: item.low || '',
+                realFeel: item.realFeel || '',
+                wind: item.wind || '',
+                precipitation: item.precipitation || '',
+                day: item.day || '',
+                date: item.date || '',
+                timestamp: item.timestamp || ''
+              }));
+
+              await writeToJson(outputData, jsonFile);
+              await writeToCsv(csvData, csvFile);
+            } else {
+              // Handle news headlines
+              outputData = content.map((item, index) => ({
+                id: index + 1,
+                headline: item.headline,
+                content: item.content,
+                link: item.link
+              }));
+
+              // Generate site-specific filenames
+              const baseName = site.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+              jsonFile = `${baseName}-headlines.json`;
+              csvFile = `${baseName}-headlines.csv`;
+
+              // Write to files
+              await writeToJson(outputData, jsonFile);
+              await writeToCsv(content, csvFile);
+            }
 
             // Update cache with new content
             await cache.updateCache(site.name, html);
@@ -61,7 +95,7 @@ async function main() {
             console.log(`✅ ${site.name} scraping completed!`);
             sitesProcessed++;
           } else {
-            console.log(`⚠️ No headlines found for ${site.name}`);
+            console.log(`⚠️ No content found for ${site.name}`);
           }
         }
 

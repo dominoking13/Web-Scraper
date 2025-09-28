@@ -4,12 +4,13 @@ A comprehensive web scraper that fetches news headlines from multiple sources in
 
 ## Features
 
-- 📰 **Multi-site scraping**: Scrapes from FAU main news, FAU Research, FAU Academic & Campus Life, and WPTV Local
-- 📊 **Dual output formats**: Generates both JSON and CSV files for each news source
+- 📰 **Multi-source scraping**: Scrapes news from FAU main news, FAU Research, FAU Academic & Campus Life, and WPTV Local
+- 🌤️ **Weather data**: Extracts current weather and daily forecasts from AccuWeather
+- 📊 **Dual output formats**: Generates both JSON and CSV files for each data source
 - 🧹 **Content cleaning**: Automatically removes HTML tags, JavaScript, and unwanted content
 - ⚡ **Configurable limits**: Set custom headline limits per news source
 - 🔄 **Automated scheduling**: GitHub Actions workflow for daily automated scraping
-- 📁 **Organized output**: Separate files for each news source in dedicated output directory
+- 📁 **Organized output**: Separate files for each data source in dedicated output directory
 - 🚀 **Smart caching**: Avoids re-scraping unchanged content using SHA-256 hashing
 
 ## Project Structure
@@ -37,6 +38,8 @@ fau-news-scraper/
 │   ├── fau-academic-campus-life-headlines.csv   # FAU Academic & Campus Life headlines (CSV format)
 │   ├── wptv-local-headlines.json    # WPTV Local news headlines (JSON format)
 │   ├── wptv-local-headlines.csv     # WPTV Local news headlines (CSV format)
+│   ├── accuweather-boca-raton-weather.json  # AccuWeather Boca Raton weather data (JSON format)
+│   ├── accuweather-boca-raton-weather.csv   # AccuWeather Boca Raton weather data (CSV format)
 │   └── .gitkeep              # Keeps output directory tracked by Git
 ├── .github/
 │   └── workflows/
@@ -84,6 +87,16 @@ The project includes GitHub Actions automation that runs daily at 5:00 AM EST:
 - Located in `.github/workflows/daily-scrape.yml`
 - Automatically commits and pushes updated output files
 - Runs on schedule and can be triggered manually
+
+## Weather Data
+
+The scraper includes weather data extraction from AccuWeather for Boca Raton, FL:
+
+- **Current Weather**: Temperature, conditions, and timestamp
+- **Today's Forecast**: High and low temperatures
+- **Output Files**: `accuweather-boca-raton-weather.json` and `accuweather-boca-raton-weather.csv`
+
+**Note**: Due to AccuWeather's dynamic content loading, only current and today's weather data are available. Extended forecasts require JavaScript execution or API access.
 
 ## Configuration
 
