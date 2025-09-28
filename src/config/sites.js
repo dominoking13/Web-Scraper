@@ -26,6 +26,16 @@ const sites = [
       link: 'a.ListItem'
     },
     limit: 13
+  },
+  {
+    name: 'fau-academic-campus-life',
+    url: 'https://www.fau.edu/newsdesk/academic-campus-life.php',
+    selectors: {
+      headline: 'h3',
+      content: 'p',
+      link: 'h3 a'
+    },
+    limit: 10
   }
 ];
 

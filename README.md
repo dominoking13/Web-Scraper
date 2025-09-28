@@ -4,7 +4,7 @@ A comprehensive web scraper that fetches news headlines from multiple sources in
 
 ## Features
 
-- 📰 **Multi-site scraping**: Scrapes from FAU main news, FAU Research, and WPTV Local
+- 📰 **Multi-site scraping**: Scrapes from FAU main news, FAU Research, FAU Academic & Campus Life, and WPTV Local
 - 📊 **Dual output formats**: Generates both JSON and CSV files for each news source
 - 🧹 **Content cleaning**: Automatically removes HTML tags, JavaScript, and unwanted content
 - ⚡ **Configurable limits**: Set custom headline limits per news source
@@ -33,6 +33,8 @@ fau-news-scraper/
 │   ├── fau-headlines.csv     # FAU main news headlines (CSV format)
 │   ├── fau-research-headlines.json  # FAU Research news headlines (JSON format)
 │   ├── fau-research-headlines.csv   # FAU Research news headlines (CSV format)
+│   ├── fau-academic-campus-life-headlines.json  # FAU Academic & Campus Life headlines (JSON format)
+│   ├── fau-academic-campus-life-headlines.csv   # FAU Academic & Campus Life headlines (CSV format)
 │   ├── wptv-local-headlines.json    # WPTV Local news headlines (JSON format)
 │   ├── wptv-local-headlines.csv     # WPTV Local news headlines (CSV format)
 │   └── .gitkeep              # Keeps output directory tracked by Git
