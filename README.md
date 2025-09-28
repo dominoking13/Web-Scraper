@@ -1,10 +1,10 @@
 # FAU News Scraper
 
-A comprehensive web scraper that fetches news headlines from multiple sources including Florida Atlantic University (FAU) main news, FAU Research news, and WPTV Local news. The scraper outputs clean, formatted data in both JSON and CSV formats.
+A comprehensive web scraper that fetches news headlines from multiple sources including Florida Atlantic University (FAU) Research news, FAU Academic & Campus Life, WPTV Local news, and weather data from AccuWeather. The scraper outputs clean, formatted data in both JSON and CSV formats.
 
 ## Features
 
-- 📰 **Multi-source scraping**: Scrapes news from FAU main news, FAU Research, FAU Academic & Campus Life, and WPTV Local
+- 📰 **Multi-source scraping**: Scrapes news from FAU Research, FAU Academic & Campus Life, and WPTV Local
 - 🌤️ **Weather data**: Extracts current weather and daily forecasts from AccuWeather
 - 📊 **Dual output formats**: Generates both JSON and CSV files for each data source
 - 🧹 **Content cleaning**: Automatically removes HTML tags, JavaScript, and unwanted content
@@ -30,10 +30,8 @@ fau-news-scraper/
 ├── .cache/                   # Cache directory for storing content hashes (ignored by Git)
 │   └── content-hashes.json   # SHA-256 hashes of previously scraped content
 ├── output/                   # Generated output files directory
-│   ├── fau-headlines.json    # FAU main news headlines (JSON format)
-│   ├── fau-headlines.csv     # FAU main news headlines (CSV format)
-│   ├── fau-research-headlines.json  # FAU Research news headlines (JSON format)
-│   ├── fau-research-headlines.csv   # FAU Research news headlines (CSV format)
+│   ├── fau-headlines.json    # FAU Research news headlines (JSON format)
+│   ├── fau-headlines.csv     # FAU Research news headlines (CSV format)
 │   ├── fau-academic-campus-life-headlines.json  # FAU Academic & Campus Life headlines (JSON format)
 │   ├── fau-academic-campus-life-headlines.csv   # FAU Academic & Campus Life headlines (CSV format)
 │   ├── wptv-local-headlines.json    # WPTV Local news headlines (JSON format)

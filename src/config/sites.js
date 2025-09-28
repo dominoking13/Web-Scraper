@@ -1,21 +1,13 @@
 const sites = [
   {
     name: 'fau',
-    url: 'https://www.fau.edu/newsdesk/',
-    selectors: {
-      headline: 'h3.widget-content__title',
-      content: 'div.widget-content__content',
-      link: 'h3.widget-content__title a'
-    }
-  },
-  {
-    name: 'fau-research',
     url: 'https://www.fau.edu/newsdesk/tags.php?tag=research',
     selectors: {
       headline: 'h3[itemprop="headline"]',
       content: 'p[itemprop="description"]',
       link: 'h3[itemprop="headline"] a'
-    }
+    },
+    limit: 12
   },
   {
     name: 'wptv-local',
