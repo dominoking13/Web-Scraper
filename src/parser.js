@@ -76,6 +76,12 @@ async function parseHeadlines(html, siteConfig) {
     // Get all headline elements based on site configuration
     const headlineElements = $(siteConfig.selectors.headline);
 
+    // Debug logging for fau-engineering
+    if (siteConfig.name === 'fau-engineering') {
+        console.log(`FAU Engineering debug: Found ${headlineElements.length} headline elements`);
+        console.log(`FAU Engineering debug: Selector used: ${siteConfig.selectors.headline}`);
+    }
+
     // Process each headline sequentially to avoid overwhelming servers
     const maxHeadlines = siteConfig.limit || headlineElements.length;
     for (let i = 0; i < headlineElements.length && headlines.length < maxHeadlines; i++) {
@@ -84,13 +90,25 @@ async function parseHeadlines(html, siteConfig) {
         const headline = $headline.text().trim();
 
         // Get content using site-specific selector
-        const $content = $headline.next(siteConfig.selectors.content);
-        const teaserContent = $content.length > 0 ? cleanContent($content.text().trim()) : '';
+        let teaserContent = '';
+        if (siteConfig.name === 'fau-engineering') {
+            // For FAU Engineering, headline and content are the same element
+            teaserContent = headline;
+        } else {
+            const $content = $headline.next(siteConfig.selectors.content);
+            teaserContent = $content.length > 0 ? cleanContent($content.text().trim()) : '';
+        }
 
         // Get link using site-specific selector
-        const $link = $headline.closest('a').length > 0 ? $headline.closest('a') :
-                     $headline.find('a').first();
-        const link = $link.length > 0 ? $link.attr('href') : '';
+        let link = '';
+        if (siteConfig.name === 'fau-engineering') {
+            // For FAU Engineering, the headline element itself is the link
+            link = $headline.attr('href') || '';
+        } else {
+            const $link = $headline.closest('a').length > 0 ? $headline.closest('a') :
+                         $headline.find('a').first();
+            link = $link.length > 0 ? $link.attr('href') : '';
+        }
 
         if (headline) {
             // Fetch full article content if link exists

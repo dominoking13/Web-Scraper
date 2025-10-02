@@ -30,6 +30,16 @@ const sites = [
     limit: 10
   },
   {
+    name: 'fau-engineering',
+    url: 'https://www.fau.edu/engineering/news/',
+    selectors: {
+      headline: 'a[href*="/engineering/news/"]:not([href$="/engineering/news/"]):not([href$="/engineering/news/phd-announcements/"]):not([href*="cms.omniupdate.com"])',
+      content: 'a[href*="/engineering/news/"]:not([href$="/engineering/news/"]):not([href$="/engineering/news/phd-announcements/"]):not([href*="cms.omniupdate.com"])', // Using headline as content since there's no separate excerpt
+      link: 'a[href*="/engineering/news/"]:not([href$="/engineering/news/"]):not([href$="/engineering/news/phd-announcements/"]):not([href*="cms.omniupdate.com"])'
+    },
+    limit: 10
+  },
+  {
     name: 'accuweather-boca-raton',
     url: 'https://www.accuweather.com/en/us/boca-raton/33432/weather-forecast/332347',
     type: 'weather',
