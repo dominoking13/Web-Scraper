@@ -44,6 +44,7 @@ fau-news-scraper/
 │       ├── daily-scrape.yml  # GitHub Actions workflow for automated daily scraping
 │       └── upload-to-s3.yml  # GitHub Actions workflow for S3 uploads
 ├── package.json              # Project dependencies and npm scripts
+├── test-s3-upload.sh         # Test script for S3 upload functionality
 ├── .gitignore                # Files and directories to ignore by Git
 └── README.md                 # This documentation file
 ```
@@ -112,7 +113,18 @@ The project includes automatic upload of CSV and JSON files to an S3 bucket:
 3. Add the following repository secrets:
    - `AWS_ACCESS_KEY_ID`
    - `AWS_SECRET_ACCESS_KEY`
-   - `AWS_REGION`
+#### Testing S3 Uploads
+
+Use the included test script to verify S3 upload functionality locally:
+
+```bash
+./test-s3-upload.sh
+```
+
+This script will:
+- Check AWS CLI installation and configuration
+- List files that would be uploaded
+- Provide commands for manual S3 uploads
 
 ## Weather Data
 
