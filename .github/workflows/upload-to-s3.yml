@@ -1,0 +1,40 @@
+name: Upload to S3
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'output/*.csv'
+      - 'output/*.json'
+  workflow_dispatch:           # Manual trigger
+
+permissions:
+  contents: read
+
+jobs:
+  upload-to-s3:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Upload CSV files to S3
+        run: |
+          aws s3 cp output/ s3://radio-scripts/ --recursive --exclude "*" --include "*.csv"
+
+      - name: Upload JSON files to S3
+        run: |
+          aws s3 cp output/ s3://radio-scripts/ --recursive --exclude "*" --include "*.json"
+
+      - name: List uploaded files
+        run: |
+          echo "📤 Files uploaded to S3 bucket 'radio-scripts':"
+          aws s3 ls s3://radio-scripts/ --recursive | grep -E '\.(csv|json)$' | while read -r line; do
+            echo "  $line"
+          done

@@ -41,7 +41,8 @@ fau-news-scraper/
 │   └── .gitkeep              # Keeps output directory tracked by Git
 ├── .github/
 │   └── workflows/
-│       └── daily-scrape.yml  # GitHub Actions workflow for automated daily scraping
+│       ├── daily-scrape.yml  # GitHub Actions workflow for automated daily scraping
+│       └── upload-to-s3.yml  # GitHub Actions workflow for S3 uploads
 ├── package.json              # Project dependencies and npm scripts
 ├── .gitignore                # Files and directories to ignore by Git
 └── README.md                 # This documentation file
@@ -85,6 +86,33 @@ The project includes GitHub Actions automation that runs daily at 5:00 AM EST:
 - Located in `.github/workflows/daily-scrape.yml`
 - Automatically commits and pushes updated output files
 - Runs on schedule and can be triggered manually
+
+### S3 Upload Automation
+
+The project includes automatic upload of CSV and JSON files to an S3 bucket:
+
+- Located in `.github/workflows/upload-to-s3.yml`
+- Triggers on pushes to main branch when output files change
+- Uploads all `.csv` and `.json` files from the `output/` directory
+- Can be triggered manually via GitHub Actions
+
+#### S3 Setup Requirements
+
+1. **Create S3 Bucket**: Create a bucket named `radio-scripts` in your AWS account
+2. **Configure AWS Credentials**: Add the following secrets to your GitHub repository:
+   - `AWS_ACCESS_KEY_ID`: Your AWS access key ID
+   - `AWS_SECRET_ACCESS_KEY`: Your AWS secret access key
+   - `AWS_REGION`: Your AWS region (e.g., `us-east-1`)
+3. **Set Bucket Permissions**: Ensure your AWS credentials have `s3:PutObject` permissions for the `radio-scripts` bucket
+
+#### Repository Secrets Setup
+
+1. Go to your GitHub repository
+2. Navigate to **Settings** → **Secrets and variables** → **Actions**
+3. Add the following repository secrets:
+   - `AWS_ACCESS_KEY_ID`
+   - `AWS_SECRET_ACCESS_KEY`
+   - `AWS_REGION`
 
 ## Weather Data
 
