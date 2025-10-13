@@ -44,7 +44,6 @@ fau-news-scraper/
 │       ├── daily-scrape.yml  # GitHub Actions workflow for automated daily scraping
 │       └── upload-to-s3.yml  # GitHub Actions workflow for S3 uploads
 ├── package.json              # Project dependencies and npm scripts
-├── test-s3-upload.sh         # Test script for S3 upload functionality
 ├── .gitignore                # Files and directories to ignore by Git
 └── README.md                 # This documentation file
 ```
