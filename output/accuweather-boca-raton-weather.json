@@ -2,15 +2,15 @@
   {
     "id": 1,
     "type": "current",
-    "temperature": "76°F",
-    "condition": "Partly cloudy",
-    "timestamp": "2025-10-28T10:02:45.190Z"
+    "temperature": "74°F",
+    "condition": "Mostly cloudy",
+    "timestamp": "2025-10-29T10:02:31.772Z"
   },
   {
     "id": 2,
     "type": "today",
-    "high": "89°",
-    "low": "75°",
-    "date": "2025-10-28"
+    "high": "86°",
+    "low": "68°",
+    "date": "2025-10-29"
   }
 ]
