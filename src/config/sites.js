@@ -48,6 +48,26 @@ const sites = [
       todayWeather: '[data-qa="today-weather"]',
       forecast10Day: '[data-qa="10day"] .daily-list-item'
     }
+  },
+  {
+    name: 'cnbc-economy',
+    url: 'https://www.cnbc.com/economy/',
+    selectors: {
+      headline: 'div.Card-titleContainer a',
+      content: 'div.Card-titleContainer a', // Using headline as content since there's no separate excerpt
+      link: 'div.Card-titleContainer a'
+    },
+    limit: 10
+  },
+  {
+    name: 'fau-sports',
+    url: 'https://fausports.com/archives',
+    selectors: {
+      headline: 'a[href*="/news/"]:not([href*="student-ticket"]):not([href*="premium-tickets"]):not([href*="general-"])',
+      content: 'a[href*="/news/"]:not([href*="student-ticket"]):not([href*="premium-tickets"]):not([href*="general-"])', // Using headline as content since there's no separate excerpt
+      link: 'a[href*="/news/"]:not([href*="student-ticket"]):not([href*="premium-tickets"]):not([href*="general-"])'
+    },
+    limit: 15
   }
 ];
 

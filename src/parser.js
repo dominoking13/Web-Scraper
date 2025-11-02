@@ -113,15 +113,55 @@ async function parseHeadlines(html, siteConfig) {
         if (headline) {
             // Fetch full article content if link exists
             let fullContent = teaserContent;
+            let actualHeadline = headline; // Start with the link text as fallback
             if (link) {
                 try {
                     console.log(`Fetching full content for: ${headline.substring(0, 50)}...`);
-                    const fullUrl = link.startsWith('http') ? link : siteConfig.url + link;
+                    // Special handling for FAU Sports - links are relative to domain root, not archives page
+                    const baseUrl = siteConfig.name === 'fau-sports' ? 'https://fausports.com' : siteConfig.url;
+                    const fullUrl = link.startsWith('http') ? link : baseUrl + link;
                     const articleResponse = await axios.get(fullUrl);
                     const $article = cheerio.load(articleResponse.data);
 
+                    // For FAU Sports, try to extract the actual headline from the article page
+                    if (siteConfig.name === 'fau-sports') {
+                        // Try meta title first (most reliable)
+                        const metaTitle = $article('meta[property="og:title"]').attr('content') ||
+                                         $article('meta[name="title"]').attr('content') ||
+                                         $article('title').text();
+
+                        if (metaTitle && metaTitle.includes(' - ')) {
+                            // Remove the site name suffix
+                            actualHeadline = metaTitle.split(' - ')[0].trim();
+                        } else if (metaTitle) {
+                            actualHeadline = metaTitle.trim();
+                        } else {
+                            // Fallback to HTML selectors
+                            const headlineSelectors = [
+                                'h1',
+                                '.headline',
+                                '.article-title',
+                                '.story-title',
+                                '.page-title',
+                                'header h1',
+                                '.content-header h1'
+                            ];
+
+                            for (const hSelector of headlineSelectors) {
+                                const titleElement = $article(hSelector);
+                                if (titleElement.length > 0) {
+                                    const extractedTitle = titleElement.text().trim();
+                                    if (extractedTitle && extractedTitle.length > 5 && extractedTitle !== 'FAU') {
+                                        actualHeadline = extractedTitle;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
                     // Try different selectors for article content
-                    const articleSelectors = [
+                    let articleSelectors = [
                         '.article-content',
                         '.content-body',
                         '.news-content',
@@ -132,6 +172,15 @@ async function parseHeadlines(html, siteConfig) {
                         '.article-body',
                         '.story-body'
                     ];
+
+                    // Add FAU Sports specific selectors with higher priority
+                    if (siteConfig.name === 'fau-sports') {
+                        articleSelectors = [
+                            '.prose.story-page__content__body.s-text-paragraph-longform',
+                            '.story-page__content__body',
+                            '.prose'
+                        ].concat(articleSelectors);
+                    }
 
                     for (const selector of articleSelectors) {
                         const contentElement = $article(selector);
@@ -187,9 +236,9 @@ async function parseHeadlines(html, siteConfig) {
             await new Promise(resolve => setTimeout(resolve, 500));
 
             headlines.push({
-                headline: headline,
+                headline: actualHeadline,
                 content: cleanContent(fullContent),
-                link: link.startsWith('http') ? link : siteConfig.url + link
+                link: link.startsWith('http') ? link : (siteConfig.name === 'fau-sports' ? 'https://fausports.com' : siteConfig.url) + link
             });
         }
     }
