@@ -68,6 +68,16 @@ const sites = [
       link: 'a[href*="/news/"]:not([href*="student-ticket"]):not([href*="premium-tickets"]):not([href*="general-"])'
     },
     limit: 15
+  },
+  {
+    name: 'boca-current-affairs',
+    url: 'https://www.myboca.us/CivicAlerts.aspx?CID=1',
+    selectors: {
+      headline: 'a[id^="alertTitle_"]',
+      content: 'div.item.intro.fr-view p', // The paragraph following the headline
+      link: 'a[id^="alertTitle_"]'
+    },
+    limit: 10
   }
 ];
 
