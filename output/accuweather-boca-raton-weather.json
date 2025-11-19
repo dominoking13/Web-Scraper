@@ -2,15 +2,15 @@
   {
     "id": 1,
     "type": "current",
-    "temperature": "64°F",
+    "temperature": "76°F",
     "condition": "Clear",
-    "timestamp": "2025-11-18T10:02:21.829Z"
+    "timestamp": "2025-11-19T10:02:19.899Z"
   },
   {
     "id": 2,
     "type": "today",
-    "high": "83°",
-    "low": "69°",
-    "date": "2025-11-18"
+    "high": "84°",
+    "low": "71°",
+    "date": "2025-11-19"
   }
 ]
