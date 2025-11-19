@@ -43,6 +43,9 @@ function cleanContent(text) {
     cleaned = cleaned.replace(/now signed up to receive[^}]*}/gi, '');
     cleaned = cleaned.replace(/Click here to manage all Newsletters/gi, '');
 
+    // Remove Boca Current Affairs boilerplate text
+    cleaned = cleaned.replace(/Create a Website Account - Manage notification subscriptions, save form progress and more\./gi, '');
+
     // Remove copyright notices and boilerplate
     cleaned = cleaned.replace(/Copyright \d{4} [^.]*\./gi, '');
     cleaned = cleaned.replace(/All rights reserved\./gi, '');
@@ -94,6 +97,23 @@ async function parseHeadlines(html, siteConfig) {
         if (siteConfig.name === 'fau-engineering') {
             // For FAU Engineering, headline and content are the same element
             teaserContent = headline;
+        } else if (siteConfig.name === 'boca-current-affairs') {
+            // For Boca Current Affairs, find the content paragraph that comes after the headline
+            // Look for the next paragraph element within a reasonable distance
+            let $content = $headline.next('div.item.intro.fr-view p');
+            if ($content.length === 0) {
+                // Fallback: find the next paragraph in the document flow
+                const headlineParent = $headline.closest('h3');
+                let current = headlineParent;
+                for (let i = 0; i < 10; i++) { // Look up to 10 elements ahead
+                    current = current.next();
+                    if (current.is('p') && current.text().trim().length > 10) {
+                        $content = current;
+                        break;
+                    }
+                }
+            }
+            teaserContent = $content.length > 0 ? cleanContent($content.text().trim()) : '';
         } else {
             const $content = $headline.next(siteConfig.selectors.content);
             teaserContent = $content.length > 0 ? cleanContent($content.text().trim()) : '';

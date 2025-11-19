@@ -8,6 +8,24 @@ async function main() {
   try {
     console.log('🚀 Starting multi-site news scraping with caching...');
 
+    // Check for command-line arguments to filter sites
+    const args = process.argv.slice(2); // Skip 'node' and script name
+    let sitesToProcess = sites;
+
+    if (args.length > 0) {
+      // Filter sites based on provided names
+      const requestedSites = args.map(arg => arg.toLowerCase());
+      sitesToProcess = sites.filter(site => requestedSites.includes(site.name.toLowerCase()));
+
+      if (sitesToProcess.length === 0) {
+        console.log('❌ No matching sites found. Available sites:');
+        sites.forEach(site => console.log(`  - ${site.name}`));
+        return;
+      }
+
+      console.log(`🎯 Running selective scrape for: ${sitesToProcess.map(s => s.name).join(', ')}`);
+    }
+
     // Initialize content cache
     const cache = new ContentCache();
     await cache.init();
@@ -16,7 +34,7 @@ async function main() {
     let sitesSkipped = 0;
 
     // Process each site sequentially
-    for (const site of sites) {
+    for (const site of sitesToProcess) {
       try {
         console.log(`\n=== Processing ${site.name} ===`);
         console.log(`Fetching news from ${site.url}...`);

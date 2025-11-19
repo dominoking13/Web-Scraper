@@ -79,6 +79,28 @@ This will:
 - Update content hashes for future runs
 - Display progress and results in the console (including cache hits/skips)
 
+### Selective Site Scraping
+
+Run the scraper for specific sites only:
+```bash
+# Run only FAU Research
+npm start -- fau-research
+
+# Run only WPTV Local
+npm start -- wptv-local
+
+# Run only Boca Current Affairs
+npm start -- boca-current-affairs
+
+# Run multiple sites (space-separated)
+npm start -- fau-research wptv-local boca-current-affairs
+```
+
+This is useful for:
+- Testing specific sites during development
+- Running targeted updates for particular sources
+- Faster execution when you only need certain data
+
 ### Automated Execution
 
 The project includes GitHub Actions automation that runs daily at 5:00 AM EST:
