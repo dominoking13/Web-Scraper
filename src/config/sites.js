@@ -78,6 +78,16 @@ const sites = [
       link: 'a[id^="alertTitle_"]'
     },
     limit: 10
+  },
+  {
+    name: 'nbc-sports',
+    url: 'https://www.nbcsports.com/',
+    selectors: {
+      headline: 'div.PageListTopSearch-items-item div.PagePromo-title a.Link',
+      content: 'div.PageListTopSearch-items-item div.PagePromo-title a.Link', // Using headline as content since there's no separate excerpt
+      link: 'div.PageListTopSearch-items-item div.PagePromo-title a.Link'
+    },
+    limit: 10
   }
 ];
 
