@@ -88,6 +88,16 @@ const sites = [
       link: 'div.PageListFeed-items-item div.PagePromo-title a.Link'
     },
     limit: 10
+  },
+  {
+    name: 'downtown-boca',
+    url: 'https://www.downtownboca.org/161/Top-11-Things-To-Do',
+    selectors: {
+      headline: 'h2',
+      content: 'p', // Content is in the next paragraph after each h2
+      link: 'h2' // Link is the main page URL
+    },
+    limit: 11
   }
 ];
 

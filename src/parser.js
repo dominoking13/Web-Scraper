@@ -92,6 +92,11 @@ async function parseHeadlines(html, siteConfig) {
         const $headline = $(element);
         const headline = $headline.text().trim();
 
+        // Skip non-numbered headlines for downtown-boca
+        if (siteConfig.name === 'downtown-boca' && !/^\d+\./.test(headline)) {
+            return; // Skip this iteration
+        }
+
         // Get content using site-specific selector
         let teaserContent = '';
         if (siteConfig.name === 'fau-engineering') {
@@ -114,6 +119,10 @@ async function parseHeadlines(html, siteConfig) {
                 }
             }
             teaserContent = $content.length > 0 ? cleanContent($content.text().trim()) : '';
+        } else if (siteConfig.name === 'downtown-boca') {
+            // For Downtown Boca, each h2 heading has its content in the next paragraph
+            const $content = $headline.next('p');
+            teaserContent = $content.length > 0 ? cleanContent($content.text().trim()) : '';
         } else {
             const $content = $headline.next(siteConfig.selectors.content);
             teaserContent = $content.length > 0 ? cleanContent($content.text().trim()) : '';
@@ -124,6 +133,9 @@ async function parseHeadlines(html, siteConfig) {
         if (siteConfig.name === 'fau-engineering') {
             // For FAU Engineering, the headline element itself is the link
             link = $headline.attr('href') || '';
+        } else if (siteConfig.name === 'downtown-boca') {
+            // For Downtown Boca, all links point to the main page
+            link = siteConfig.url;
         } else {
             const $link = $headline.closest('a').length > 0 ? $headline.closest('a') :
                          $headline.find('a').first();
@@ -134,7 +146,7 @@ async function parseHeadlines(html, siteConfig) {
             // Fetch full article content if link exists
             let fullContent = teaserContent;
             let actualHeadline = headline; // Start with the link text as fallback
-            if (link) {
+            if (link && siteConfig.name !== 'downtown-boca') {
                 try {
                     console.log(`Fetching full content for: ${headline.substring(0, 50)}...`);
                     // Special handling for FAU Sports - links are relative to domain root, not archives page
