@@ -1,5 +1,21 @@
 const cheerio = require('cheerio');
 const axios = require('axios');
+const robotsParser = require('robots-parser');
+
+async function checkRobotsTxt(url) {
+  try {
+    const robotsUrl = new URL(url).origin + '/robots.txt';
+    const response = await axios.get(robotsUrl, { timeout: 5000 });
+    const robots = robotsParser(robotsUrl, response.data);
+    const isAllowed = robots.isAllowed(url, 'fau-news-scraper/1.0');
+    console.log(`Robots.txt check for ${url}: ${isAllowed ? 'ALLOWED' : 'BLOCKED'}`);
+    return isAllowed;
+  } catch (error) {
+    // If robots.txt doesn't exist or can't be fetched, assume allowed
+    console.log(`Robots.txt not found or error for ${url}, assuming allowed`);
+    return true;
+  }
+}
 
 // Function to clean HTML content and remove unwanted elements
 function cleanContent(text) {
@@ -152,7 +168,32 @@ async function parseHeadlines(html, siteConfig) {
                     // Special handling for FAU Sports - links are relative to domain root, not archives page
                     const baseUrl = siteConfig.name === 'fau-sports' ? 'https://fausports.com' : siteConfig.url;
                     const fullUrl = link.startsWith('http') ? link : baseUrl + link;
-                    const articleResponse = await axios.get(fullUrl);
+
+                    // Check robots.txt before fetching article
+                    const robotsAllowed = await checkRobotsTxt(fullUrl);
+                    if (!robotsAllowed) {
+                        console.log(`❌ Blocked by robots.txt: ${fullUrl}`);
+                        throw new Error(`Access blocked by robots.txt for ${fullUrl}`);
+                    }
+
+                    const articleResponse = await axios.get(fullUrl, {
+                        headers: {
+                            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+                            'Accept-Language': 'en-US,en;q=0.9',
+                            'Accept-Encoding': 'gzip, deflate, br',
+                            'DNT': '1',
+                            'Connection': 'keep-alive',
+                            'Upgrade-Insecure-Requests': '1',
+                            'Sec-Fetch-Dest': 'document',
+                            'Sec-Fetch-Mode': 'navigate',
+                            'Sec-Fetch-Site': 'none',
+                            'Sec-Fetch-User': '?1',
+                            'Cache-Control': 'max-age=0',
+                            'Referer': 'https://www.nytimes.com/'
+                        },
+                        timeout: 30000
+                    });
                     const $article = cheerio.load(articleResponse.data);
 
                     // For FAU Sports, try to extract the actual headline from the article page
