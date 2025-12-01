@@ -50,12 +50,12 @@ const sites = [
     }
   },
   {
-    name: 'cnbc-economy',
-    url: 'https://www.cnbc.com/economy/',
+    name: 'nyt-economy',
+    url: 'https://www.nytimes.com/section/business/economy',
     selectors: {
-      headline: 'div.Card-titleContainer a',
-      content: 'div.Card-titleContainer a', // Using headline as content since there's no separate excerpt
-      link: 'div.Card-titleContainer a'
+      headline: '.css-1l4spti a',
+      content: '.css-1l4spti a', // Using headline as content since NYT excerpts might be different
+      link: '.css-1l4spti a'
     },
     limit: 10
   },
