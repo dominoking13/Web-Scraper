@@ -106,7 +106,14 @@ async function parseHeadlines(html, siteConfig) {
     for (let i = 0; i < headlineElements.length && headlines.length < maxHeadlines; i++) {
         const element = headlineElements[i];
         const $headline = $(element);
-        const headline = $headline.text().trim();
+        
+        // Special handling for Epoch Times - extract alt attribute from img elements
+        let headline = '';
+        if (siteConfig.name === 'epoch-times-business' && $headline.is('img')) {
+            headline = $headline.attr('alt') || '';
+        } else {
+            headline = $headline.text().trim();
+        }
 
         // Skip non-numbered headlines for downtown-boca
         if (siteConfig.name === 'downtown-boca' && !/^\d+\./.test(headline)) {

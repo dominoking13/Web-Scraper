@@ -90,14 +90,14 @@ const sites = [
     limit: 10
   },
   {
-    name: 'downtown-boca',
-    url: 'https://www.downtownboca.org/161/Top-11-Things-To-Do',
+    name: 'epoch-times-business',
+    url: 'https://www.theepochtimes.com/business/economies',
     selectors: {
-      headline: 'h2',
-      content: 'p', // Content is in the next paragraph after each h2
-      link: 'h2' // Link is the main page URL
+      headline: 'a[data-testid="post-thumbnail"] img',
+      content: 'a[data-testid="post-thumbnail"] img', // Using headline as content since there's no separate excerpt
+      link: 'a[data-testid="post-thumbnail"]'
     },
-    limit: 11
+    limit: 10
   }
 ];
 
