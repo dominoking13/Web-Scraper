@@ -7,9 +7,9 @@ on:
       - 'output/*.csv'
       - 'output/*.json'
   workflow_run:
-    workflows: ["Daily FAU News Scrape"]
-    types:
-      - completed
+   # workflows: ["Daily FAU News Scrape"]
+   # types:
+   #   - completed
   workflow_dispatch:           # Manual trigger
 
 permissions:
